@@ -1,5 +1,9 @@
 package com.campusdrive.uniride_iam_service.application.services;
 
-public class TokenService {
+import com.campusdrive.uniride_iam_service.domain.models.User;
 
+public interface TokenService {
+    String generateToken(User user);
+    String getUsernameFromToken(String token);
+    boolean validateToken(String token);
 }
