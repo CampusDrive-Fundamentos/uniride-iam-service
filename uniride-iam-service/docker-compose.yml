@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: campusdrive_password
       POSTGRES_DB: iam_db
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_iam_data:/var/lib/postgresql/data
 
