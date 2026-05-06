@@ -12,16 +12,20 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DriverRepositoryAdapter implements DriverRepository {
     private final JpaDriverRepository jpaDriverRepository;
+    private final com.campusdrive.uniride_iam_service.infrastructure.persistence.repositories.JpaUserRepository jpaUserRepository;
 
     @Override
     public Driver save(Driver driver) {
+        UserEntity userEntity = jpaUserRepository.findById(driver.getUser().getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         DriverEntity entity = DriverEntity.builder()
                 .id(driver.getId())
                 .dni(driver.getDni())
                 .licenseNumber(driver.getLicenseNumber())
                 .culCertificate(driver.getCulCertificate())
                 .isActive(driver.isActive())
-                .user(UserEntity.builder().id(driver.getUser().getId()).build())
+                .user(userEntity)
                 .build();
         
         DriverEntity savedEntity = jpaDriverRepository.save(entity);

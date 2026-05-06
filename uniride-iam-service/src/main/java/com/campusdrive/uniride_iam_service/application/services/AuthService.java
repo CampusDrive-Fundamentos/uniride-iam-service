@@ -54,7 +54,7 @@ public class AuthService {
                 .roles(Set.of(Role.STUDENT))
                 .build();
 
-        userRepository.save(user);
+        user = userRepository.save(user);
 
         Student student = Student.builder()
                 .universityName(request.getUniversityName())
@@ -97,7 +97,7 @@ public class AuthService {
                 .roles(Set.of(Role.DRIVER))
                 .build();
 
-        userRepository.save(user);
+        user = userRepository.save(user);
 
         Driver driver = Driver.builder()
                 .dni(request.getDni())
