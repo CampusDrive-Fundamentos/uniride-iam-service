@@ -1,5 +1,6 @@
 package com.campusdrive.uniride_iam_service.domain.models;
 
-public class Role {
-
+public enum Role {
+    STUDENT,
+    DRIVER
 }
