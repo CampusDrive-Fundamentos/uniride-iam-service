@@ -1,5 +1,59 @@
 package com.campusdrive.uniride_iam_service.infrastructure.persistence.adapters;
 
-public class UserRepositoryAdapter {
+import com.campusdrive.uniride_iam_service.domain.models.User;
+import com.campusdrive.uniride_iam_service.domain.repositories.UserRepository;
+import com.campusdrive.uniride_iam_service.infrastructure.persistence.entities.UserEntity;
+import com.campusdrive.uniride_iam_service.infrastructure.persistence.repositories.JpaUserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
+@Component
+@RequiredArgsConstructor
+public class UserRepositoryAdapter implements UserRepository {
+    private final JpaUserRepository jpaUserRepository;
+
+    @Override
+    public User save(User user) {
+        UserEntity entity = toEntity(user);
+        UserEntity savedEntity = jpaUserRepository.save(entity);
+        return toDomain(savedEntity);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return jpaUserRepository.findByEmail(email).map(this::toDomain);
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return jpaUserRepository.findByUsername(username).map(this::toDomain);
+    }
+
+    private UserEntity toEntity(User domain) {
+        return UserEntity.builder()
+                .id(domain.getId())
+                .username(domain.getUsername())
+                .firstName(domain.getFirstName())
+                .lastName(domain.getLastName())
+                .email(domain.getEmail())
+                .password(domain.getPassword())
+                .phoneNumber(domain.getPhoneNumber())
+                .roles(domain.getRoles())
+                .build();
+    }
+
+    private User toDomain(UserEntity entity) {
+        return User.builder()
+                .id(entity.getId())
+                .username(entity.getUsername())
+                .firstName(entity.getFirstName())
+                .lastName(entity.getLastName())
+                .email(entity.getEmail())
+                .password(entity.getPassword())
+                .phoneNumber(entity.getPhoneNumber())
+                .roles(entity.getRoles())
+                .build();
+    }
 }
