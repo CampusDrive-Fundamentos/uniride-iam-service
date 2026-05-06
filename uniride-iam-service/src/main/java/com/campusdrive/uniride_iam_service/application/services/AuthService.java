@@ -10,6 +10,7 @@ import com.campusdrive.uniride_iam_service.domain.exceptions.InvalidEmailExcepti
 import com.campusdrive.uniride_iam_service.domain.exceptions.UserAlreadyExistsException;
 import com.campusdrive.uniride_iam_service.domain.models.Driver;
 import com.campusdrive.uniride_iam_service.domain.models.Role;
+import com.campusdrive.uniride_iam_service.domain.models.Student;
 import com.campusdrive.uniride_iam_service.domain.models.User;
 import com.campusdrive.uniride_iam_service.domain.patterns.SecurityValidator;
 import com.campusdrive.uniride_iam_service.domain.repositories.DriverRepository;
