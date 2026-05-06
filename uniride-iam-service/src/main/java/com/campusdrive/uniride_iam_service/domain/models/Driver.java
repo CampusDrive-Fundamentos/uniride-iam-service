@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Driver {
     private Long id;
+    private String dni;
     private String licenseNumber;
+    private String culCertificate; // Certificado de Antecedentes Penales
+    private boolean isActive;
     private User user;
 }

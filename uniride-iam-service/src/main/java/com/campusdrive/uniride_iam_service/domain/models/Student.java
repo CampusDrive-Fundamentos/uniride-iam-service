@@ -12,5 +12,7 @@ import lombok.NoArgsConstructor;
 public class Student {
     private Long id;
     private String studentCode;
+    private String universityName;
+    private String tiuPhoto;
     private User user;
 }

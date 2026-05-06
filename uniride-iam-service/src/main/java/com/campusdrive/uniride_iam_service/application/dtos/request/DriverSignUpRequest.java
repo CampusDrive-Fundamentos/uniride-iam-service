@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class StudentSignUpRequest {
+public class DriverSignUpRequest {
     @NotBlank
     private String username;
     
@@ -26,8 +26,11 @@ public class StudentSignUpRequest {
     private String phoneNumber;
     
     @NotBlank
-    private String universityName;
+    private String dni;
     
     @NotBlank
-    private String tiuPhoto;
+    private String licenseNumber;
+    
+    @NotBlank
+    private String culCertificate;
 }
