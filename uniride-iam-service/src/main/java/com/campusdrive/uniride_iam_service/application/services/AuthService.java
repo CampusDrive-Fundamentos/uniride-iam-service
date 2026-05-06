@@ -32,7 +32,7 @@ public class AuthService {
 
     public AuthResponse signUpStudent(StudentSignUpRequest request) {
         // 1. Validar correo .edu y TIU usando el Singleton
-        if (!SecurityValidator.getInstance().isEmailValid(request.getEmail())) {
+        if (!SecurityValidator.getInstance().isAcademicEmailValid(request.getEmail())) {
             throw new InvalidEmailException("Email must be a valid .edu or .edu.pe address");
         }
 
@@ -75,11 +75,12 @@ public class AuthService {
 
     public AuthResponse signUpDriver(DriverSignUpRequest request) {
         if (!SecurityValidator.getInstance().isEmailValid(request.getEmail())) {
-            throw new InvalidEmailException("Email must be a valid .edu or .edu.pe address");
+            throw new InvalidEmailException("Email must be a valid format (e.g. user@domain.com)");
         }
 
         if (!SecurityValidator.getInstance().hasCleanCriminalRecords(request.getDni(), request.getCulCertificate())) {
-            throw new InvalidDriverCredentialsException("Criminal records check failed. Driver is not apt.");
+            throw new InvalidDriverCredentialsException(
+                    "Registro rechazado: La validación de antecedentes (CUL) indica que el conductor no cumple con los requisitos de seguridad de UniRide. Debes de colocar un CUL válido (CUL-VALIDO-100)");
         }
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {

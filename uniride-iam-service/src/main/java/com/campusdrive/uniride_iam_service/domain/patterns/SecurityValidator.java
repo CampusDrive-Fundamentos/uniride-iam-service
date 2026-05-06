@@ -12,9 +12,14 @@ public class SecurityValidator {
         return instance;
     }
 
-    public boolean isEmailValid(String email) {
+    public boolean isAcademicEmailValid(String email) {
         if (email == null) return false;
         return email.toLowerCase().endsWith(".edu") || email.toLowerCase().endsWith(".edu.pe");
+    }
+
+    public boolean isEmailValid(String email) {
+        if (email == null) return false;
+        return email.contains("@") && email.contains(".");
     }
 
     public boolean hasCleanCriminalRecords(String dni, String culCertificate) {
