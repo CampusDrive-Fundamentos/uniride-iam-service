@@ -12,14 +12,14 @@ import java.util.Date;
 
 @Component
 public class JwtProvider {
-    @Value("${jwt.secret:university_secret_key_university_secret_key}")
+    @Value("${jwt.secret}")
     private String secret;
 
     @Value("${jwt.expiration:86400000}")
     private long expiration;
 
     private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes());
+        return Keys.hmacShaKeyFor(secret.getBytes(java.nio.charset.StandardCharsets.UTF_8));
     }
 
     public String generateToken(String subject) {
