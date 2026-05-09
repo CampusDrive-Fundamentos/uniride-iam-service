@@ -12,12 +12,12 @@ public class JwtTokenAdapter implements TokenService {
 
     @Override
     public String generateToken(User user) {
-        return jwtProvider.generateToken(user.getUsername());
+        return jwtProvider.generateToken(user.getId().toString());
     }
 
     @Override
-    public String getUsernameFromToken(String token) {
-        return jwtProvider.getUsernameFromToken(token);
+    public String getSubjectFromToken(String token) {
+        return jwtProvider.getSubjectFromToken(token);
     }
 
     @Override

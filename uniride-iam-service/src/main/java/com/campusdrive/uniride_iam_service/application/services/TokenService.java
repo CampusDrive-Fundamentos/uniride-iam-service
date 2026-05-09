@@ -4,6 +4,6 @@ import com.campusdrive.uniride_iam_service.domain.models.User;
 
 public interface TokenService {
     String generateToken(User user);
-    String getUsernameFromToken(String token);
+    String getSubjectFromToken(String token);
     boolean validateToken(String token);
 }
