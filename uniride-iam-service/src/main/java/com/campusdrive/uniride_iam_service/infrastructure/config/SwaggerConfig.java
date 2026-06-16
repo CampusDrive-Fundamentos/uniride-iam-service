@@ -5,8 +5,10 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
@@ -18,6 +20,10 @@ public class SwaggerConfig {
                         .title("UniRide IAM Service API")
                         .description("Identity and Access Management for UniRide Platform")
                         .version("v1.0"))
+                .servers(List.of(
+                        new Server().url("/iam").description("Gateway Route"),
+                        new Server().url("http://localhost:8081").description("Local Direct Route")
+                ))
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new Components()
                         .addSecuritySchemes("Bearer Authentication", createSecurityScheme()));
