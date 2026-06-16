@@ -82,7 +82,7 @@ class AuthServiceTest {
 
         // Assert
         assertNotNull(response);
-        assertEquals("john.doe@university.edu", response.getEmail());
+        assertEquals("Usuario registrado exitosamente", response.getMessage());
         verify(userRepository, times(1)).save(any());
         verify(studentRepository, times(1)).save(any());
     }
@@ -120,7 +120,6 @@ class AuthServiceTest {
         // Assert
         assertNotNull(response);
         assertEquals("mock-jwt-token", response.getToken());
-        assertEquals("john.doe@university.edu", response.getEmail());
         verify(tokenService, times(1)).generateToken(testUser);
     }
 }

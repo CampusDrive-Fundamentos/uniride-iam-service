@@ -65,7 +65,7 @@ public class AuthService {
         studentRepository.save(student);
 
         return SignUpResponse.builder()
-                .email(user.getEmail())
+                .message("Usuario registrado exitosamente")
                 .build();
     }
 
@@ -106,7 +106,7 @@ public class AuthService {
         driverRepository.save(driver);
 
         return SignUpResponse.builder()
-                .email(user.getEmail())
+                .message("Usuario registrado exitosamente")
                 .build();
     }
 
@@ -122,7 +122,6 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .token(token)
-                .email(user.getEmail())
                 .build();
     }
 }
