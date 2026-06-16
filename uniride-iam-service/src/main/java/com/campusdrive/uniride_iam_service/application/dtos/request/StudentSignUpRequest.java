@@ -6,8 +6,6 @@ import lombok.Data;
 
 @Data
 public class StudentSignUpRequest {
-    @NotBlank
-    private String username;
     
     @NotBlank
     private String firstName;

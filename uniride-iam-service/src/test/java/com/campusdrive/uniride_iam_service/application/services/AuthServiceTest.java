@@ -3,6 +3,7 @@ package com.campusdrive.uniride_iam_service.application.services;
 import com.campusdrive.uniride_iam_service.application.dtos.request.LoginRequest;
 import com.campusdrive.uniride_iam_service.application.dtos.request.StudentSignUpRequest;
 import com.campusdrive.uniride_iam_service.application.dtos.response.AuthResponse;
+import com.campusdrive.uniride_iam_service.application.dtos.response.SignUpResponse;
 import com.campusdrive.uniride_iam_service.domain.exceptions.UserAlreadyExistsException;
 import com.campusdrive.uniride_iam_service.domain.models.Role;
 import com.campusdrive.uniride_iam_service.domain.models.User;
@@ -52,7 +53,6 @@ class AuthServiceTest {
     @BeforeEach
     void setUp() {
         studentRequest = new StudentSignUpRequest();
-        studentRequest.setUsername("johndoe");
         studentRequest.setEmail("john.doe@university.edu");
         studentRequest.setPassword("password123");
         studentRequest.setFirstName("John");
@@ -63,7 +63,6 @@ class AuthServiceTest {
 
         testUser = User.builder()
                 .id(1L)
-                .username("johndoe")
                 .email("john.doe@university.edu")
                 .password("encodedPassword")
                 .roles(Set.of(Role.STUDENT))
@@ -77,15 +76,13 @@ class AuthServiceTest {
         when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
         when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
         when(userRepository.save(any())).thenReturn(testUser);
-        when(tokenService.generateToken(any())).thenReturn("mock-jwt-token");
 
         // Act
-        AuthResponse response = authService.signUpStudent(studentRequest);
+        SignUpResponse response = authService.signUpStudent(studentRequest);
 
         // Assert
         assertNotNull(response);
-        assertEquals("mock-jwt-token", response.getToken());
-        assertEquals("johndoe", response.getUsername());
+        assertEquals("Usuario registrado exitosamente", response.getMessage());
         verify(userRepository, times(1)).save(any());
         verify(studentRepository, times(1)).save(any());
     }
@@ -110,10 +107,10 @@ class AuthServiceTest {
     void signIn_Successful() {
         // Arrange
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setUsername("johndoe");
+        loginRequest.setEmail("john.doe@university.edu");
         loginRequest.setPassword("password123");
 
-        when(userRepository.findByUsername("johndoe")).thenReturn(Optional.of(testUser));
+        when(userRepository.findByEmail("john.doe@university.edu")).thenReturn(Optional.of(testUser));
         when(passwordEncoder.matches("password123", "encodedPassword")).thenReturn(true);
         when(tokenService.generateToken(testUser)).thenReturn("mock-jwt-token");
 
@@ -123,7 +120,6 @@ class AuthServiceTest {
         // Assert
         assertNotNull(response);
         assertEquals("mock-jwt-token", response.getToken());
-        assertEquals("johndoe", response.getUsername());
         verify(tokenService, times(1)).generateToken(testUser);
     }
 }

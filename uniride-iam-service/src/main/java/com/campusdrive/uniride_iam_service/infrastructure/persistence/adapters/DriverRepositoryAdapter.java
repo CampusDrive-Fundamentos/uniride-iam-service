@@ -32,4 +32,14 @@ public class DriverRepositoryAdapter implements DriverRepository {
         driver.setId(savedEntity.getId());
         return driver;
     }
+
+    @Override
+    public boolean existsByDni(String dni) {
+        return jpaDriverRepository.existsByDni(dni);
+    }
+
+    @Override
+    public boolean existsByLicenseNumber(String licenseNumber) {
+        return jpaDriverRepository.existsByLicenseNumber(licenseNumber);
+    }
 }

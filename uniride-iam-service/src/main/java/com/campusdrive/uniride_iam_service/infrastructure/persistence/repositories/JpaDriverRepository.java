@@ -4,4 +4,7 @@ import com.campusdrive.uniride_iam_service.infrastructure.persistence.entities.D
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JpaDriverRepository extends JpaRepository<DriverEntity, Long> {
+    boolean existsByDni(String dni);
+    boolean existsByLicenseNumber(String licenseNumber);
 }
+

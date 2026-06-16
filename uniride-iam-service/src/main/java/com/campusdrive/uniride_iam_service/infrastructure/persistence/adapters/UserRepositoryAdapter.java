@@ -27,14 +27,13 @@ public class UserRepositoryAdapter implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
-        return jpaUserRepository.findByUsername(username).map(this::toDomain);
+    public Optional<User> findById(Long id) {
+        return jpaUserRepository.findById(id).map(this::toDomain);
     }
 
     private UserEntity toEntity(User domain) {
         return UserEntity.builder()
                 .id(domain.getId())
-                .username(domain.getUsername())
                 .firstName(domain.getFirstName())
                 .lastName(domain.getLastName())
                 .email(domain.getEmail())
@@ -47,7 +46,6 @@ public class UserRepositoryAdapter implements UserRepository {
     private User toDomain(UserEntity entity) {
         return User.builder()
                 .id(entity.getId())
-                .username(entity.getUsername())
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
                 .email(entity.getEmail())
