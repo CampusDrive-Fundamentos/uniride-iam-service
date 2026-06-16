@@ -5,6 +5,7 @@ import com.campusdrive.uniride_iam_service.application.dtos.request.DriverSignUp
 import com.campusdrive.uniride_iam_service.application.dtos.request.LoginRequest;
 import com.campusdrive.uniride_iam_service.application.dtos.request.StudentSignUpRequest;
 import com.campusdrive.uniride_iam_service.application.dtos.response.AuthResponse;
+import com.campusdrive.uniride_iam_service.application.dtos.response.SignUpResponse;
 import com.campusdrive.uniride_iam_service.domain.exceptions.InvalidDriverCredentialsException;
 import com.campusdrive.uniride_iam_service.domain.exceptions.InvalidEmailException;
 import com.campusdrive.uniride_iam_service.domain.exceptions.UserAlreadyExistsException;
@@ -30,7 +31,7 @@ public class AuthService {
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthResponse signUpStudent(StudentSignUpRequest request) {
+    public SignUpResponse signUpStudent(StudentSignUpRequest request) {
         // 1. Validar correo .edu y TIU usando el Singleton
         if (!SecurityValidator.getInstance().isAcademicEmailValid(request.getEmail())) {
             throw new InvalidEmailException("Email must be a valid .edu or .edu.pe address");
@@ -45,7 +46,6 @@ public class AuthService {
         }
 
         User user = User.builder()
-                .username(request.getUsername())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
@@ -64,16 +64,12 @@ public class AuthService {
 
         studentRepository.save(student);
 
-        String token = tokenService.generateToken(user);
-
-        return AuthResponse.builder()
-                .token(token)
-                .username(user.getUsername())
+        return SignUpResponse.builder()
                 .email(user.getEmail())
                 .build();
     }
 
-    public AuthResponse signUpDriver(DriverSignUpRequest request) {
+    public SignUpResponse signUpDriver(DriverSignUpRequest request) {
         if (!SecurityValidator.getInstance().isEmailValid(request.getEmail())) {
             throw new InvalidEmailException("Email must be a valid format (e.g. user@domain.com)");
         }
@@ -89,7 +85,6 @@ public class AuthService {
 
         // 4. Crear usuario base
         User user = User.builder()
-                .username(request.getUsername())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
@@ -110,17 +105,13 @@ public class AuthService {
 
         driverRepository.save(driver);
 
-        String token = tokenService.generateToken(user);
-
-        return AuthResponse.builder()
-                .token(token)
-                .username(user.getUsername())
+        return SignUpResponse.builder()
                 .email(user.getEmail())
                 .build();
     }
 
     public AuthResponse signIn(LoginRequest request) {
-        User user = userRepository.findByUsername(request.getUsername())
+        User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -131,7 +122,6 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .token(token)
-                .username(user.getUsername())
                 .email(user.getEmail())
                 .build();
     }

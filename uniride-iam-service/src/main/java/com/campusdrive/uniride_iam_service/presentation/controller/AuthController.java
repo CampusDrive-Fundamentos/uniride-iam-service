@@ -4,6 +4,7 @@ import com.campusdrive.uniride_iam_service.application.dtos.request.DriverSignUp
 import com.campusdrive.uniride_iam_service.application.dtos.request.LoginRequest;
 import com.campusdrive.uniride_iam_service.application.dtos.request.StudentSignUpRequest;
 import com.campusdrive.uniride_iam_service.application.dtos.response.AuthResponse;
+import com.campusdrive.uniride_iam_service.application.dtos.response.SignUpResponse;
 import com.campusdrive.uniride_iam_service.application.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +21,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup/student")
-    public ResponseEntity<AuthResponse> signUpStudent(@Valid @RequestBody StudentSignUpRequest request) {
+    public ResponseEntity<SignUpResponse> signUpStudent(@Valid @RequestBody StudentSignUpRequest request) {
         return ResponseEntity.ok(authService.signUpStudent(request));
     }
 
     @PostMapping("/signup/driver")
-    public ResponseEntity<AuthResponse> signUpDriver(@Valid @RequestBody DriverSignUpRequest request) {
+    public ResponseEntity<SignUpResponse> signUpDriver(@Valid @RequestBody DriverSignUpRequest request) {
         return ResponseEntity.ok(authService.signUpDriver(request));
     }
 
