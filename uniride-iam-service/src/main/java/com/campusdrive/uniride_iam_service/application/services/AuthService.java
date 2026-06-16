@@ -19,6 +19,7 @@ import com.campusdrive.uniride_iam_service.domain.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -31,6 +32,7 @@ public class AuthService {
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public SignUpResponse signUpStudent(StudentSignUpRequest request) {
         // 1. Validar correo .edu y TIU usando el Singleton
         if (!SecurityValidator.getInstance().isAcademicEmailValid(request.getEmail())) {
@@ -69,6 +71,7 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional
     public SignUpResponse signUpDriver(DriverSignUpRequest request) {
         if (!SecurityValidator.getInstance().isEmailValid(request.getEmail())) {
             throw new InvalidEmailException("Email must be a valid format (e.g. user@domain.com)");
@@ -81,6 +84,14 @@ public class AuthService {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("User with this email already exists");
+        }
+
+        if (driverRepository.existsByDni(request.getDni())) {
+            throw new UserAlreadyExistsException("A driver with this DNI already exists");
+        }
+
+        if (driverRepository.existsByLicenseNumber(request.getLicenseNumber())) {
+            throw new UserAlreadyExistsException("A driver with this license number already exists");
         }
 
         // 4. Crear usuario base
