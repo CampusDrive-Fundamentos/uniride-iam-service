@@ -16,4 +16,6 @@ public class Driver {
     private String culCertificate; // Certificado de Antecedentes Penales
     private boolean isActive;
     private User user;
+    private String cardNumber;
+    private Vehicle vehicle;
 }

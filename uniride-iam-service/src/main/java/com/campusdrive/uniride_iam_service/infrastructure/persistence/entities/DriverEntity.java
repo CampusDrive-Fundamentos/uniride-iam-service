@@ -24,6 +24,12 @@ public class DriverEntity {
     private String culCertificate;
     private boolean isActive;
 
+    @Column(name = "card_number")
+    private String cardNumber;
+
+    private String vehicleType;
+    private String vehicleName;
+
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
