@@ -13,6 +13,7 @@ import com.campusdrive.uniride_iam_service.domain.models.Driver;
 import com.campusdrive.uniride_iam_service.domain.models.Role;
 import com.campusdrive.uniride_iam_service.domain.models.Student;
 import com.campusdrive.uniride_iam_service.domain.models.User;
+import com.campusdrive.uniride_iam_service.domain.models.Vehicle;
 import com.campusdrive.uniride_iam_service.domain.patterns.SecurityValidator;
 import com.campusdrive.uniride_iam_service.domain.repositories.DriverRepository;
 import com.campusdrive.uniride_iam_service.domain.repositories.UserRepository;
@@ -90,7 +91,8 @@ public class AuthService {
             throw new UserAlreadyExistsException("A driver with this DNI already exists");
         }
 
-        if (driverRepository.existsByLicenseNumber(request.getLicenseNumber())) {
+        String licenseNumber = request.getVehicle() != null ? request.getVehicle().getLicenseNumber() : null;
+        if (licenseNumber != null && driverRepository.existsByLicenseNumber(licenseNumber)) {
             throw new UserAlreadyExistsException("A driver with this license number already exists");
         }
 
@@ -108,9 +110,14 @@ public class AuthService {
 
         Driver driver = Driver.builder()
                 .dni(request.getDni())
-                .licenseNumber(request.getLicenseNumber())
+                .licenseNumber(licenseNumber)
                 .culCertificate(request.getCulCertificate())
                 .isActive(true)
+                .cardNumber(request.getCardNumber())
+                .vehicle(request.getVehicle() != null ? Vehicle.builder()
+                        .type(request.getVehicle().getType())
+                        .name(request.getVehicle().getName())
+                        .build() : null)
                 .user(user)
                 .build();
 
