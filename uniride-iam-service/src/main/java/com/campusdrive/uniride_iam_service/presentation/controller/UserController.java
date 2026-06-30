@@ -38,6 +38,7 @@ public class UserController {
                 : null;
 
         UserProfileResponse.UserProfileResponseBuilder responseBuilder = UserProfileResponse.builder()
+                .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
